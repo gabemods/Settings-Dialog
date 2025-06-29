@@ -1,0 +1,362 @@
+/* 2025 Gabe Mods (https://gabemods.github.io/about), All Rights Reserved. 
+*/
+
+:root {
+  --md-icon-font: Material Symbols Rounded;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+.settings-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: 90vw;
+  max-width: 320px;
+  padding: 24px;
+  border: none;
+  border-radius: 24px;
+  background-color: white;
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+  pointer-events: none;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1), transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-dialog.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.settings-dialog.closing {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+  pointer-events: none;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  z-index: 998;
+  transition: opacity 250ms ease;
+  pointer-events: none;
+}
+
+.backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.backdrop.hidden {
+  display: none;
+}
+
+.settings-dialog select {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 30px;
+  background-color: #f5f8ff;
+  color: #1a73e8;
+  font-weight: bold;
+  font-size: 16px;
+  appearance: none;
+  text-align: center;
+  box-shadow: inset 0 0 0 1px #d0d0d0;
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.settings-dialog select:active {
+  background-color: #e0ecff;
+  box-shadow: inset 0 0 0 1px #90caf9;
+}
+
+.settings-dialog select:focus {
+  background-color: #e0ecff;
+  box-shadow: inset 0 0 0 1px #90caf9;
+}
+
+body.dark .settings-dialog {
+  background-color: #121212;
+  color: white;
+}
+
+body.dark .settings-dialog select {
+  background-color: #1e1e1e;
+  color: #90caf9;
+  box-shadow: inset 0 0 0 1px #444;
+}
+
+body.dark .settings-dialog select:active,
+body.dark .settings-dialog select:focus {
+  background-color: #2a2a2a;
+  box-shadow: inset 0 0 0 2px #90caf9;
+}
+
+.settings-dialog .modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.settings-dialog label[for="theme-select"] {
+  font-size: 1.1rem;
+  font-weight: 510;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.settings-dialog label[for="font-select"] {
+  font-size: 1.1rem;
+  font-weight: 510;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.settings-dialog label[for="background-select"] {
+  font-size: 1.1rem;
+  font-weight: 510;
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 2px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  font: "Open Sans";
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: color 0.2s ease;
+  border-radius: 50px;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #174ea6;
+  background-color: rgba(26, 115, 232, 0.08);
+  outline: none;
+}
+
+.reset-button {
+  background: none;
+  border: none;
+  color: #1a73e8;
+  font: "Open Sans";
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: color 0.2s ease;
+  border-radius: 50px;
+}
+
+.rese-button:hover,
+.reset-button:focus {
+  color: #174ea6;
+  background-color: rgba(26, 115, 232, 0.08);
+  outline: none;
+}
+
+.toggle-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+}
+
+.setting-label {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 52px;
+  height: 28px;
+  touch-action: none;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+  border-radius: 34px;
+  cursor: pointer;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+input:checked + .slider {
+  background-color: #0278ff;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+body.dark .slider {
+  background-color: #444;
+}
+
+body.dark input:checked + .slider {
+  background-color: #90caf9;
+}
+
+body.dark .slider:before {
+  background-color: #e0e0e0;
+}
+
+.setting-item .setting-label {
+    display: block; 
+    margin-bottom: 6px; 
+    font-weight: 500;
+    color: var(--text-light);
+    font-size: 1rem; 
+}
+
+body.dark .setting-item .setting-label {
+    color: var(--text-dark);
+}
+
+.background-image-controls {
+    display: flex; 
+    flex-wrap: wrap; 
+    align-items: center; 
+    gap: 8px; 
+    margin-bottom: 12px; 
+}
+
+.image-picker-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 5px; 
+    padding: 6px 10px; 
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px; 
+    background-color: var(--card-light);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 0.9rem; 
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); 
+    white-space: nowrap; 
+}
+
+body.dark .image-picker-button {
+    border-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+}
+
+.image-picker-button:hover {
+    background-color: rgba(0, 0, 0, 0.04); 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+body.dark .image-picker-button:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.image-picker-button:active {
+    transform: translateY(0.5px); 
+    box-shadow: 0 0px 1px rgba(0, 0, 0, 0.05);
+}
+
+.image-picker-button md-icon {
+    font-size: 15px; 
+    color: inherit;
+}
+
+.image-picker-button.clear-button {
+    background-color: var(--red-accent);
+    color: white;
+    border-color: var(--red-accent);
+}
+
+.image-picker-button.clear-button:hover {
+    background-color: #d33a3a;
+    border-color: #d33a3a;
+}
+
+.background-status {
+
+    margin-left: 5px; 
+    font-size: 1rem; 
+    color: #888;
+    text-align: left;
+    padding-left: 0; 
+}
+
+body.dark .background-status {
+    color: #999;
+}
+
+.settings-modal .setting-item {
+    margin-bottom: 16px; 
+}
