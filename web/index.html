@@ -1,0 +1,107 @@
+<!-- 2025 Gabe Mods (https://gabemods.github.io/about), All Rights Reserved. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings Dialog</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/material-dialog.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet">
+<script type="importmap">
+  {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+<script type="module">
+  import '@material/web/all.js';
+  import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+  
+  document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+</script>
+</head>
+<body>
+  <header class="main-header translucent">
+    <div class="header-inner">
+  
+  <!-- Text Title -->
+  <div class="title-container">
+    <h1 class="text-title">Settings Dialog</h1>
+  </div>
+  <div class="header-icons">
+  <md-icon-button id="settings-button" aria-label="Settings">
+    <md-icon>settings</md-icon>
+  </md-icon-button>
+</div>
+</div>
+</header>
+  <p class="text">Nothing to see here...</p>
+  <footer>
+  <div class="container">
+    <hr class="custom-divider">
+    <span>&copy; <span id="current-year"></span> Coded by Gabe Mods <br> If you use any of this code you must include this copyright and the copyright in the code.</span>
+  </div>
+</footer>
+  <div id="backdrop" class="backdrop hidden"></div>
+<dialog id="settings-modal" class="settings-dialog">
+  <div class="modal-content">
+    <h2>Settings</h2>
+    <label for="theme-select">Theme</label>
+    <select id="theme-select">
+      <option value="system">System</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+    <div class="setting-row">
+      <div class="toggle-setting">
+        <span class="setting-label">Translucency</span>
+        <label class="switch">
+          <input type="checkbox" id="translucency-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+    <div class="setting-row">
+      <label for="font-select">Font</label>
+      <select id="font-select">
+        <option value="system">System Default</option>
+        <option value="OneUISans">OneUISans</option>
+        <option value="Roboto">Roboto</option>
+        <option value="Open Sans">Open Sans</option>
+      </select>
+    </div>
+    <div class="setting-item">
+    <label for="background-select" class="setting-label">Background Image:</label>
+    <div class="background-image-controls">
+        <button id="choose-background-button" class="image-picker-button">
+            <md-icon>image</md-icon> Image picker
+        </button>
+        <button id="clear-background-button" class="image-picker-button clear-button">
+            <md-icon>close</md-icon> Clear
+        </button>
+
+        <input type="file" id="image-upload-input" accept="image/*" style="display: none;">
+
+        <span id="current-background-status" class="background-status">None selected</span>
+    </div>
+</div>
+    <div class="modal-actions">
+      <button id="reset-settings-button" class="reset-button">Reset</button>
+      <button id="close-settings" class="close-button">Close</button>
+    </div>
+  </div>
+</dialog>
+<div id="content-fade-overlay"></div>
+  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/material-dialog.js"></script>
+  <script type="module" src="assets/js/themes.js"></script>
+  <script type="module" src="assets/js/header.js"></script>
+  <script type="module" src="assets/js/fonts.js"></script>
+</body>
+</html>
