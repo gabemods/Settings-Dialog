@@ -1,0 +1,284 @@
+/* 2025 Gabe Mods (https://gabemods.github.io/about), All Rights Reserved. 
+*/
+
+:root {
+  --bg-light: #fafafa;
+  --bg-dark: #121212;
+  --text-light: #111;
+  --text-dark: #eee;
+  --header-bg-light: rgba(250, 250, 250, 0.0);
+  --header-bg-dark: rgba(18, 18, 18, 0.7);
+  --solid-bg: #ffffff;
+  --transition: 0.25s ease-in-out;
+  --card-light: #ffffff;
+  --card-dark: #121212;
+  --text: var(--text-light);
+  --md-icon-font: Material Symbols Rounded;
+  --md-sys-typescale-body-font: "OneUISans", sans-serif;
+  --md-sys-typescale-title-font: "OneUISans", sans-serif;
+  --md-sys-typescale-label-font: "OneUISans", sans-serif;
+  --md-sys-typescale-headline-font: "OneUISans", sans-serif;
+  --header-initial-height: 70px;
+  --header-scrolled-height: 50px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "OneUISans";
+  font-weight: 400;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background var(--transition), color var(--transition), font-family 0.3s ease-in-out;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  --text: var(--text-dark);
+  --solid-bg: #121212;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+body.font-system {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+@font-face {
+  font-family: "OneUISans";
+  src: url("../fonts/OneUISans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: 'OneUISans', sans-serif;
+}
+
+body.font-OneUISans {
+  font-family: 'OneUISans', sans-serif;
+}
+
+body.font-system-apple {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+body.font-Roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+body.font-Open-Sans {
+  font-family: 'Open Sans', sans-serif;
+}
+
+body {
+  font-family: inherit;
+  font-size: 30px;
+}
+
+.main-header {
+  font-family: inherit;
+  font-weight: 900;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
+  z-index: 200;
+  will-change: padding, background-color, backdrop-filter, box-shadow;
+  transition: padding 0.25s ease, backdrop-filter 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease, height 0.25s ease;
+  background: var(--header-bg-light);
+  backdrop-filter: blur(15px);
+  height: var(--header-initial-height);
+  display: flex;
+  align-items: center;
+}
+
+body.dark .main-header {
+  background: var(--header-bg-dark);
+}
+
+.main-header.scrolled {
+  padding: 8px 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  height: var(--header-scrolled-height);
+}
+
+.main-header.translucent.scrolled {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+body.dark .main-header.translucent.scrolled {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.main-header.no-translucency {
+  background-color: var(--solid-bg);
+  backdrop-filter: none;
+}
+
+body.dark .main-header.no-translucency {
+  background-color: #121212 !important;
+}
+
+.main-header.shrink {
+  padding: 6px 16px;
+  height: var(--header-scrolled-height);
+}
+
+.header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header-title {
+  max-width: 100px;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.title-container {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.title-container.hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+  position: absolute;
+}
+
+.image-title {
+  height: 35px;
+  width: auto;
+}
+
+.main-header h1 {
+  font-size: 1.3rem;
+  margin: 0;
+  transition: font-size var(--transition);
+  will-change: font-size, transform;
+}
+
+.main-header.shrink h1 {
+  font-size: 1.2rem;
+}
+
+.text {
+  display: flex;
+  
+  margin-top: calc(var(--header-initial-height) + 20px);
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: calc(100vh - var(--header-initial-height) - 40px);
+}
+
+.main-header.scrolled+.text,
+.main-header.shrink+.text {
+  margin-top: calc(var(--header-scrolled-height) + 20px);
+}
+
+.main-header .header-icons {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+body.dark md-icon {
+  color: white;
+}
+
+body:not(.dark) md-icon {
+  color: #444;
+}
+
+#content-fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--fade-overlay-color, rgba(255, 255, 255, 1));
+  z-index: 100000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 250ms ease-in-out, visibility 250ms ease-in-out;
+  pointer-events: none;
+}
+
+body.dark {
+  --fade-overlay-color: rgba(0, 0, 0, 1);
+}
+
+#content-fade-overlay.fade-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.custom-divider {
+  border: 0;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  width: 100%;
+}
+
+body.dark .custom-divider {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: transparent;
+  margin-top: 40px;
+  padding: 10px 0;
+  text-align: center;
+  font-size: clamp(0.85rem, 1vw + 0.3rem, 0.95rem);
+  color: var(--text-light);
+  transition: color var(--transition);
+}
+
+body.dark footer {
+  color: var(--text-dark);
+}
+
+footer .container {
+  width: min(90%, 800px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
