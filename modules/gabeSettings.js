@@ -25,10 +25,9 @@ class GabeSettings {
 
     // Apply saved settings after all HTML and custom elements are registered/injected
     // Give a slight delay to ensure custom elements are fully upgraded by the browser
-    // This is especially important for things like font application that depend on DOM readiness
     setTimeout(() => {
       this.applySavedSettings();
-    }, 100);
+    }, 100); // Increased delay slightly for custom element readiness
   }
 
   /**
@@ -52,7 +51,6 @@ class GabeSettings {
       document.head.appendChild(materialSymbolsLink);
     }
 
-    // Import Map for Material Web Components
     if (!document.querySelector('script[type="importmap"]')) {
       const importMapScript = document.createElement('script');
       importMapScript.type = "importmap";
@@ -60,7 +58,6 @@ class GabeSettings {
       document.head.appendChild(importMapScript);
     }
 
-    // Material Web Components script itself
     if (!document.querySelector('script[data-material-injected]')) {
       const materialScript = document.createElement('script');
       materialScript.type = "module";
@@ -90,11 +87,12 @@ class GabeSettings {
 
   /**
    * Injects the global custom CSS styles (body, header, footer specific) into the document head.
+   * Modal-specific styles are now encapsulated within the custom element.
    */
   injectGlobalStyles() {
     const style = document.createElement('style');
     style.textContent = `
-      /* Global CSS Variables */
+      /* Global CSS Variables (for body, header, footer and to be picked up by host-context in shadow DOM) */
       :root {
         --bg-light: #fafafa;
         --bg-dark: #121212;
@@ -103,17 +101,18 @@ class GabeSettings {
         --header-bg-light: rgba(250, 250, 250, 0.0);
         --header-bg-dark: rgba(18, 18, 18, 0.7);
         --solid-bg: #ffffff;
-        --accent: #e0a100; /* Re-added global accent */
+        --accent: #e0a100;
         --red-accent: #b22222;
-        --transparent-button: rgba(255, 255, 255, 0); /* Re-added global transparent button */
+        --transparent-button: rgba(255, 255, 255, 0);
         --transition: 0.25s ease-in-out;
         --card-light: #ffffff;
         --card-dark: #121212;
         --search-overlay-light: rgba(255, 255, 255, 0.3);
         --search-overlay-dark: rgba(0, 0, 0, 0.3);
-        --text: var(--text-light);
+        --text: var(--text-light); /* Default text color */
 
-        --md-icon-font: 'Material Symbols Rounded';
+        /* Material Icons/Symbols font variable - used globally and by custom elements */
+        --md-icon-font: 'Material Symbols Rounded'; /* Your specified icon font */
         --md-sys-typescale-body-font: "OneUISans", sans-serif;
         --md-sys-typescale-title-font: "OneUISans", sans-serif;
         --md-sys-typescale-label-font: "OneUISans", sans-serif;
@@ -166,7 +165,7 @@ class GabeSettings {
       body.font-OneUISans {
         font-family: 'OneUISans', sans-serif;
       }
-      body.font-system-apple {
+      body.font-system-apple { /* You might want to consolidate system fonts */
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       }
       body.font-Roboto {
@@ -386,7 +385,7 @@ class GabeSettings {
    */
   injectGlobalHTML() {
     const globalHTML = `
-      <header class="main-header">
+      <header class="main-header translucent">
         <div class="header-inner">
           <div class="title-container">
             <h1 class="text-title">Settings Dialog</h1>
@@ -435,23 +434,25 @@ class GabeSettings {
         this.shadowRoot.innerHTML = `
           <style>
             /* CSS Variables that need to be available INSIDE the Shadow DOM */
-            /* These are duplicates/overrides of global variables to ensure they work within the shadow DOM */
             :host {
+                /* These variables need to be explicitly set or re-declared here
+                   if they are consumed directly by elements inside the shadow DOM
+                   and you expect them to reflect changes from outside.
+                   Alternatively, use :host-context() where possible. */
                 --text-light: #111;
                 --text-dark: #eee;
                 --card-light: #ffffff;
                 --card-dark: #121212;
                 --red-accent: #b22222;
-                --accent: #e0a100; /* Re-added for custom element use */
-                --transparent-button: rgba(255, 255, 255, 0); /* Re-added for custom element use */
-                --md-icon-font: 'Material Symbols Rounded';
+                --md-icon-font: 'Material Symbols Rounded'; /* Ensure icon font is recognized */
             }
 
-            /* Dark mode variables for :host-context rules, re-mapping for shadow DOM */
+            /* Dark mode variables for :host-context rules */
             :host-context(body.dark) {
-                --text-light: var(--text-dark);
-                --card-light: var(--card-dark);
+                --text-light: var(--text-dark); /* Effectively makes --text-light dark in dark mode within shadow DOM */
+                --card-light: var(--card-dark); /* Makes --card-light dark in dark mode within shadow DOM */
             }
+
 
             /* Your provided modal-specific CSS */
             @keyframes scaleIn {
@@ -487,7 +488,7 @@ class GabeSettings {
               border-radius: 24px;
               background-color: white;
               color: black;
-              font-family: 'Roboto', sans-serif;
+              font-family: 'Roboto', sans-serif; /* Explicitly set font for dialog */
               box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
               z-index: 999;
               opacity: 0;
@@ -606,11 +607,11 @@ class GabeSettings {
               margin-top: 12px;
             }
 
-            .close-button, .reset-button {
+            .close-button, .reset-button { /* Combined common styles */
               background: none;
               border: none;
               color: #1a73e8;
-              font-family: inherit;
+              font-family: inherit; /* Inherit font from dialog's font-family */
               font-weight: 600;
               font-size: 16px;
               cursor: pointer;
@@ -621,7 +622,7 @@ class GabeSettings {
 
             .close-button:hover,
             .close-button:focus,
-            .reset-button:hover,
+            .reset-button:hover, /* Corrected typo 'rese-button' */
             .reset-button:focus {
               color: #174ea6;
               background-color: rgba(26, 115, 232, 0.08);
@@ -639,12 +640,12 @@ class GabeSettings {
 
             .setting-label {
               font-size: 1rem;
-              color: var(--text-light);
+              color: var(--text-light); /* Uses the re-declared/overridden variable */
             }
 
             /* Dark mode for setting-label within shadow DOM */
             :host-context(body.dark) .setting-label {
-                color: var(--text-dark);
+                color: var(--text-dark); /* Uses the re-declared/overridden variable */
             }
 
             .switch {
@@ -735,8 +736,8 @@ class GabeSettings {
                 padding: 6px 10px;
                 border: 1px solid rgba(0, 0, 0, 0.1);
                 border-radius: 5px;
-                background-color: var(--card-light);
-                color: var(--text-light);
+                background-color: var(--card-light); /* Uses the re-declared/overridden variable */
+                color: var(--text-light); /* Uses the re-declared/overridden variable */
                 font-family: inherit;
                 font-size: 0.9rem;
                 cursor: pointer;
@@ -747,8 +748,8 @@ class GabeSettings {
 
             :host-context(body.dark) .image-picker-button {
                 border-color: rgba(255, 255, 255, 0.1);
-                background-color: var(--card-dark);
-                color: var(--text-dark);
+                background-color: var(--card-dark); /* Uses the re-declared/overridden variable */
+                color: var(--text-dark); /* Uses the re-declared/overridden variable */
             }
 
             .image-picker-button:hover {
@@ -767,14 +768,14 @@ class GabeSettings {
 
             .image-picker-button md-icon {
                 font-size: 15px;
-                font-family: var(--md-icon-font);
+                font-family: var(--md-icon-font); /* Ensure md-icon picks up the correct font */
                 color: inherit;
             }
 
             .image-picker-button.clear-button {
-                background-color: var(--red-accent);
+                background-color: var(--red-accent); /* Uses the re-declared variable */
                 color: white;
-                border-color: var(--red-accent);
+                border-color: var(--red-accent); /* Uses the re-declared variable */
             }
 
             .image-picker-button.clear-button:hover {
@@ -876,9 +877,11 @@ class GabeSettings {
             });
         }
 
+
         if (themeSelect) {
           themeSelect.addEventListener('change', (event) => {
             const selectedTheme = event.target.value;
+            // Call the global GabeSettings instance method to apply theme to document.body
             document.dispatchEvent(new CustomEvent('gabeSettings:themeChange', { detail: selectedTheme }));
             localStorage.setItem('theme', selectedTheme);
           });
@@ -887,6 +890,7 @@ class GabeSettings {
         if (translucencyToggle) {
           translucencyToggle.addEventListener('change', (event) => {
             const isChecked = event.target.checked;
+            // Dispatch event for global GabeSettings to handle header class
             document.dispatchEvent(new CustomEvent('gabeSettings:translucencyChange', { detail: isChecked }));
             localStorage.setItem('translucency', isChecked);
           });
@@ -895,6 +899,7 @@ class GabeSettings {
         if (fontSelect) {
           fontSelect.addEventListener('change', (event) => {
             const selectedFont = event.target.value;
+            // Dispatch event for global GabeSettings to apply font to document.body
             document.dispatchEvent(new CustomEvent('gabeSettings:fontChange', { detail: selectedFont }));
             localStorage.setItem('font', selectedFont);
           });
@@ -1053,7 +1058,14 @@ class GabeSettings {
 
     document.addEventListener('gabeSettings:translucencyChange', (event) => {
         const isChecked = event.detail;
-        this.applyTranslucencyToDocument(isChecked); // Call the new helper
+        const header = document.querySelector('.main-header');
+        if (header) {
+            if (isChecked) {
+                header.classList.remove('no-translucency');
+            } else {
+                header.classList.add('no-translucency');
+            }
+        }
     });
 
     document.addEventListener('gabeSettings:fontChange', (event) => {
@@ -1089,12 +1101,20 @@ class GabeSettings {
       document.body.style.backgroundImage = `url('${savedBackgroundImage}')`;
     }
 
-    // Translucency (apply directly to header using new helper)
+    // Translucency (handled by custom element's toggle state, but main GabeSettings applies header class)
     const savedTranslucency = localStorage.getItem('translucency');
-    if (savedTranslucency !== null) {
-      this.applyTranslucencyToDocument(savedTranslucency === 'true');
-    } else {
-      this.applyTranslucencyToDocument(true); // Default to translucent
+    const mainHeader = document.querySelector('.main-header');
+    if (mainHeader) {
+        if (savedTranslucency !== null) {
+            const isTranslucent = savedTranslucency === 'true';
+            if (isTranslucent) {
+                mainHeader.classList.remove('no-translucency');
+            } else {
+                mainHeader.classList.add('no-translucency');
+            }
+        } else {
+            mainHeader.classList.remove('no-translucency'); // Default
+        }
     }
   }
 
@@ -1109,20 +1129,6 @@ class GabeSettings {
       }
     } else {
       document.body.classList.add(theme);
-    }
-  }
-
-  // New helper for translucency
-  applyTranslucencyToDocument(isTranslucent) {
-    const mainHeader = document.querySelector('.main-header');
-    if (mainHeader) {
-      if (isTranslucent) {
-        mainHeader.classList.add('translucent');
-        mainHeader.classList.remove('no-translucency');
-      } else {
-        mainHeader.classList.remove('translucent');
-        mainHeader.classList.add('no-translucency');
-      }
     }
   }
 
