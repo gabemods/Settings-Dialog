@@ -984,7 +984,7 @@ class GabeSettings {
             dialog.classList.add('open');
             backdrop.classList.remove('hidden');
             backdrop.classList.add('show');
-            if (dialog.tagName === 'DIALOG') {
+            if (dialog.tagName === 'DIALOG') { // Check if it's a native <dialog> element
                 dialog.showModal();
             }
             this.isOpen = true;
@@ -1002,7 +1002,7 @@ class GabeSettings {
                 dialog.removeEventListener('transitionend', handleTransitionEnd);
                 backdrop.classList.remove('show');
                 backdrop.classList.add('hidden');
-                 if (dialog.tagName === 'DIALOG') {
+                 if (dialog.tagName === 'DIALOG') { // Check if it's a native <dialog> element
                     dialog.close();
                 }
                 this.isOpen = false;
