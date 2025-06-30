@@ -26,26 +26,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: "OneUISans";
-  font-weight: 400;
-  background: var(--bg-light);
-  color: var(--text-light);
-  transition: background var(--transition), color var(--transition), font-family 0.3s ease-in-out;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
-}
-
-body.dark {
-  background: var(--bg-dark);
-  color: var(--text-dark);
-  --text: var(--text-dark);
-  --solid-bg: #121212;
-}
-
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 body.font-system {
@@ -80,8 +60,24 @@ body.font-Open-Sans {
 }
 
 body {
+  margin: 0;
   font-family: inherit;
+  font-weight: 400;
   font-size: 30px;
+  background: var(--bg-light);
+  color: var(--text-light);
+  transition: background var(--transition), color var(--transition), font-family 0.3s ease-in-out;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  --text: var(--text-dark);
+  --solid-bg: #121212;
 }
 
 .main-header {
