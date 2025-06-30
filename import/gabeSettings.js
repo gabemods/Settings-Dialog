@@ -385,8 +385,7 @@ class GabeSettings {
    */
   injectGlobalHTML() {
     const globalHTML = `
-      <header class="main-header translucent">
-        <div class="header-inner">
+      <header class="main-header"> <div class="header-inner">
           <div class="title-container">
             <h1 class="text-title">Settings Dialog</h1>
           </div>
@@ -1058,14 +1057,7 @@ class GabeSettings {
 
     document.addEventListener('gabeSettings:translucencyChange', (event) => {
         const isChecked = event.detail;
-        const header = document.querySelector('.main-header');
-        if (header) {
-            if (isChecked) {
-                header.classList.remove('no-translucency');
-            } else {
-                header.classList.add('no-translucency');
-            }
-        }
+        this.applyTranslucencyToDocument(isChecked); // Call the new helper
     });
 
     document.addEventListener('gabeSettings:fontChange', (event) => {
@@ -1101,20 +1093,12 @@ class GabeSettings {
       document.body.style.backgroundImage = `url('${savedBackgroundImage}')`;
     }
 
-    // Translucency (handled by custom element's toggle state, but main GabeSettings applies header class)
+    // Translucency (apply directly to header using new helper)
     const savedTranslucency = localStorage.getItem('translucency');
-    const mainHeader = document.querySelector('.main-header');
-    if (mainHeader) {
-        if (savedTranslucency !== null) {
-            const isTranslucent = savedTranslucency === 'true';
-            if (isTranslucent) {
-                mainHeader.classList.remove('no-translucency');
-            } else {
-                mainHeader.classList.add('no-translucency');
-            }
-        } else {
-            mainHeader.classList.remove('no-translucency'); // Default
-        }
+    if (savedTranslucency !== null) {
+      this.applyTranslucencyToDocument(savedTranslucency === 'true');
+    } else {
+      this.applyTranslucencyToDocument(true); // Default to translucent
     }
   }
 
@@ -1129,6 +1113,20 @@ class GabeSettings {
       }
     } else {
       document.body.classList.add(theme);
+    }
+  }
+
+  // New helper for translucency
+  applyTranslucencyToDocument(isTranslucent) {
+    const mainHeader = document.querySelector('.main-header');
+    if (mainHeader) {
+      if (isTranslucent) {
+        mainHeader.classList.add('translucent');
+        mainHeader.classList.remove('no-translucency');
+      } else {
+        mainHeader.classList.remove('translucent');
+        mainHeader.classList.add('no-translucency');
+      }
     }
   }
 
