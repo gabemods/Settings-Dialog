@@ -305,7 +305,8 @@ body.dark .setting-item .setting-label {
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); 
-    white-space: nowrap; 
+    white-space: nowrap;
+    margin-top: 5px;
 }
 
 body.dark .image-picker-button {
@@ -334,9 +335,12 @@ body.dark .image-picker-button:hover {
 }
 
 .image-picker-button.clear-button {
-    background-color: var(--red-accent);
-    color: white;
-    border-color: var(--red-accent);
+    background-color: var(--card-light);
+color: var(--text-light);
+}
+
+body.dark .image-picker-button.clear-button {
+  color: white;
 }
 
 .image-picker-button.clear-button:hover {
